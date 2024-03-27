@@ -158,7 +158,7 @@ code {
 .rainbow {
     background: linear-gradient(-45deg, #fc884e, #e73c7e, #b180d7, #4ee2fc, #23f5ab, #ffd52b);
     background-size: 400% 400%;
-    animation: gradient 5s ease;
+    animation: gradient 60s ease;
     animation-iteration-count: infinite;
     background-clip: text;
     -webkit-text-fill-color: transparent;
