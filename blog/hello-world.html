@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello, World!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Codystar&family=Outfit:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Urbanist:wght@100;300;400;500;800;900&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Codystar&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/global.css">
+
+    <script src="/js/navigation.js"></script>
+</head>
+
+<body>
+    <div class="content">
+        <h1>Hello, World!</h1>
+        <h2>What is going on here?</h2>
+        <p>
+            I'm making a website. This is mainly to help improve my web development skills, and they've certainly come a
+            long way in the few hours it has taken me to set this site up already!
+            <br>
+            <br>
+            I aim to try and write this website using vanilla JavaScript and HTML, the old-fashioned way. This is
+            because I normally don't write stuff this way (in fact, I normally don't even use JavaScript, I use
+            TypeScript!).
+        </p>
+        <h2>Making the website</h2>
+        <p>
+            Setting up this website was mostly smooth sailing, but I did run into a few snags during the initial
+            development.
+            <br>
+            <br>
+            For instance, when I was creating that lovely little navigation bar that you can see at the top of this site
+            (hopefully), I ran into an issue, which as a developer who doesn't do web things much at all is quite
+            interesting, but any web developer will already know the solution.
+            <br>
+            <br>
+            Instead of adding the navigation bar straight into my HTML, I decided to add a little script to insert it,
+            meaning I can modify it more easily later, if I must. However, I was trying to add the navigation bar to the
+            document using <code>document.body.insertAdjacentElement()</code>, but I was getting errors saying that
+            <code>document.body</code> was undefined - how strange!
+            <br>
+            <br>
+            The issue actually turned out to be that the code was being loaded and executed before the document had
+            properly been initialised.
+            <br>
+            <br>
+            There are a few solutions to this, such as putting your
+            <code>&ltscript></code> tag after everything in your document body, but I didn't like this, so I decided to
+            go for the more programmy approach and defer the creation of the navigation bar until after the document
+            fired an event saying that it was loaded.
+        </p>
+        <pre><code>window.addEventListener("load", function () {
+    createNavbar();
+});</code></pre>
+        <p>
+            While setting up this website, I was dreading writing the CSS to style it, but it wasn't too bad. I even got
+            dark and light theme support. I did have one big CSS issue though. You might have seen these fun <span
+                class="rainbow">rainbow</span> elements scattered around the site. They were actually really easy and
+            fun to implement - web developers don't know how lucky you have it with CSS animations!
+            <br>
+            <br>
+            However, the problem came when I wanted to add a border to the video on the home page with a similar effect
+            in light mode.
+            It is not possible to animate a border property with a gradient in CSS (yet?), so I had to get a bit hacky
+            with it.
+            <br>
+            <br>
+            That border is actually two elements, which does something cursed with padding to try and crop it
+            into looking correct, and if you don't look closely, it works pretty well.
+        </p>
+        <h2>The future</h2>
+        <p>
+            I can't anticipate that this website is going to see a lot of use, but there might be a few blog entries
+            every now and then giving some insight into some of the things I'm getting up to.
+            <br>
+            <br>
+            Have a good day!
+        </p>
+    </div>
+</body>
+
+</html>

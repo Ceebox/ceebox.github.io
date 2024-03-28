@@ -164,6 +164,11 @@ code {
     -webkit-text-fill-color: transparent;
 }
 
+.rainbow::selection {
+    background: #ff597688;
+    background-clip: content-box;
+}
+
 @keyframes fadeAnimation {
     0% {
         opacity: 0;

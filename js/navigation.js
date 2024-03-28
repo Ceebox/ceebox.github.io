@@ -3,7 +3,7 @@ function createNavbar() {
     div.className = "navigation";
 
     div.appendChild(createListElement("Home", "/index.html"));
-    div.appendChild(createListElement("Blog", "/blog/blog.html"));
+    div.appendChild(createListElement("Blog", "/blog.html"));
     div.appendChild(createListElement("Games", "/games.html"));
     div.appendChild(createListElement("About", "/about.html"));
 
