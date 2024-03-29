@@ -15,6 +15,7 @@
 
     <link rel="icon" href="/favicon.ico">
     <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/code.css">
 
     <script src="/js/navigation.js"></script>
 </head>
@@ -45,8 +46,10 @@
             <br>
             Instead of adding the navigation bar straight into my HTML, I decided to add a little script to insert it,
             meaning I can modify it more easily later, if I must. However, I was trying to add the navigation bar to the
-            document using <code>document.body.insertAdjacentElement()</code>, but I was getting errors saying that
-            <code>document.body</code> was undefined - how strange!
+            document using <code><span class="variable language_">document</span>.<span class="property">body</span>.<span
+                class="title function_">insertAdjacentElement</span>()</code>, but I was getting errors saying that
+            <code><span class="variable language_">document</span>.<span class="property">body</span></code> was
+            undefined - how strange!
             <br>
             <br>
             The issue actually turned out to be that the code was being loaded and executed before the document had
@@ -54,13 +57,17 @@
             <br>
             <br>
             There are a few solutions to this, such as putting your
-            <code>&ltscript></code> tag after everything in your document body, but I didn't like this, so I decided to
+            <code><span class="variable language_">document</span>.<span class="property">body</span></code> tag after
+            everything in your document body, but I didn't like this, so I decided
+            to
             go for the more programmy approach and defer the creation of the navigation bar until after the document
             fired an event saying that it was loaded.
         </p>
-        <pre><code>window.addEventListener("load", function () {
-    createNavbar();
-});</code></pre>
+        <pre><code><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span
+class="string">"load"</span>, <span class="keyword">function</span> (<span class="params"></span>) {
+    <span class="title function_">createNavbar</span>();
+});
+</code></pre>
         <p>
             While setting up this website, I was dreading writing the CSS to style it, but it wasn't too bad. I even got
             dark and light theme support. I did have one big CSS issue though. You might have seen these fun <span
