@@ -1,7 +1,3 @@
-html {
-    scroll-behavior: smooth;
-}
-
 /* Global text highlight colour */
 ::selection {
     background: #ff5976;
@@ -64,6 +60,8 @@ body {
     font-family: "Outfit", sans-serif;
     font-weight: 400;
     font-size: 24px;
+
+    scroll-behavior: smooth;
 
     opacity: 0;
     animation: fadeAnimation ease-in 1s;

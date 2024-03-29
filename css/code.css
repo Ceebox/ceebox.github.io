@@ -1,0 +1,75 @@
+code {
+    min-width: 100%;
+    display: inline-block;
+    overflow-x: auto;
+    border-radius: 15px;
+    padding: 3px 5px;
+    background: #232323;
+    color: #fafafa;
+    font-family: "Jetbrains Mono";
+    font-size: 20px;
+    scrollbar-width: none;
+    white-space: pre-wrap;
+}
+
+code .keyword,
+code .literal,
+code .operator,
+code .symbol {
+    color: #ff5976;
+}
+
+code .keyword::selection,
+code .literal::selection,
+code .symbol::selection {
+    background-color: #4ee2fc;
+}
+
+code .number {
+    color: #b180d7;
+}
+
+code .string {
+    color: #ffd52b;
+}
+
+code .addition,
+code .built_in,
+code .bullet,
+code .emphasis,
+code .section,
+code .selector-attr,
+code .selector-pseudo,
+code .subst,
+code .template-tag,
+code .template-variable,
+code .type,
+code .variable {
+    color: #4ee2fc;
+}
+
+code .title.function_ {
+    color: #8cf06b;
+}
+
+code .class,
+code .title,
+code .title.class_ {
+    color: #4ee2fc;
+}
+
+code .comment,
+code .deletion,
+code .meta,
+code .quote {
+    color: #5F5F5F;
+}
+
+code .doctag,
+code .keyword,
+code .literal,
+code .section,
+code .title,
+code .type {
+    font-weight: 700;
+}

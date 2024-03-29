@@ -5,6 +5,7 @@ function createNavbar() {
     div.appendChild(createListElement("Home", "/index.html"));
     div.appendChild(createListElement("Blog", "/blog.html"));
     div.appendChild(createListElement("Games", "/games.html"));
+    div.appendChild(createListElement("Web Tools", "/tools.html"));
     div.appendChild(createListElement("About", "/about.html"));
 
     document.body.insertAdjacentElement("afterbegin", div);

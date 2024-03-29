@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Highlight JS HTML Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Codystar&family=Outfit:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Urbanist:wght@100;300;400;500;800;900&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Codystar&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/code.css">
+    <link rel="stylesheet" href="/tools/hljs-generator.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script src="/js/navigation.js"></script>
+    <script src="/tools/hljs-generator.js"></script>
+</head>
+
+<body>
+    <div class="content">
+        <h1>Highlight JS HTML Generator</h1>
+        <p>This uses <a href="https://github.com/highlightjs/highlight.js/" class="rainbow">HighlightJS</a> to produce
+            styled HTML code. It doesn't work incredibly, but it is much better than doing it manually. A much more
+            reliable way to do this is to copy code from VSCode, which will be formatted and coloured appropriately.
+            This is more intended for when you want your code output to use CSS colouring, instead of the coloured spans
+            that come out of VSCode.
+        </p>
+        <h2>Settings:</h2>
+
+        <select class="languages themed">
+            <option value="ada">Ada</option>
+            <option value="arduino">Arduino</option>
+            <option value="autohotkey">AutoHotkey</option>
+            <option value="bash">Bash</option>
+            <option value="basic">Basic</option>
+            <option value="c">C</option>
+            <option value="cmake">CMake</option>
+            <option value="cpp">C++</option>
+            <option value="clojure">Awk</option>
+            <option value="csharp">C#</option>
+            <option value="css">CSS</option>
+            <option value="d">D</option>
+            <option value="elixir">Elixir</option>
+            <option value="erlang">Erlang</option>
+            <option value="excel">Excel</option>
+            <option value="fsharp">F#</option>
+            <option value="glsl">GLSL</option>
+            <option value="gml">GML</option>
+            <option value="go">Go</option>
+            <option value="haskell">Haskell</option>
+            <option value="java">Java</option>
+            <option value="javascript">JavaScript</option>
+            <option value="json">JSON</option>
+            <option value="julia">Julia</option>
+            <option value="kotlin">Kotlin</option>
+            <option value="lua">Lua</option>
+            <option value="matlab">Matlab</option>
+            <option value="moonscript">Moonscript</option>
+            <option value="objectivec">Objective-C</option>
+            <option value="perl">Perl</option>
+            <option value="php">PHP</option>
+            <option value="powershell">PowerShell</option>
+            <option value="python">Python</option>
+            <option value="ruby">Ruby</option>
+            <option value="rust">Rust</option>
+            <option value="sql">SQL</option>
+            <option value="swift">Swift</option>
+            <option value="typescript">TypeScript</option>
+            <option value="vbnet">VB .NET</option>
+            <option value="wasm">WASM</option>
+            <option value="wren">Wren</option>
+            <option value="xml">XML</option>
+        </select>
+
+        <h2>Enter Code:</h2>
+        <code class="code-input" contenteditable="true" spellcheck="false" plaintext-only></code>
+        <h2>Output:</h2>
+        <button class="copy themed ">Copy Output</button>
+        <br><br>
+        <code class="code-output"></code>
+    </div>
+</body>
+
+</html>
