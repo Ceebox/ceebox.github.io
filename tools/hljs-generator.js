@@ -2,8 +2,8 @@
 
 class HLJSManager {
 
-    constructor() {
-        this.language = "ada";
+    constructor(language) {
+        this.language = language;
         this.setUpPage();
     }
 
@@ -101,5 +101,22 @@ class HLJSManager {
 }
 
 window.addEventListener("load", function () {
-    new HLJSManager().configureHighlight("ada");
+    let language = new URLSearchParams(window.location.search).get("language") ?? "ada";
+
+    let valid = false;
+    for (let i = 0; i < document.getElementsByClassName("languages")[0].length; ++i) {
+        if (document.getElementsByClassName("languages")[0].options[i].value.toLowerCase() == language.toLowerCase()) {
+            valid = true;
+            break;
+        }
+    }
+
+    if (valid === false) {
+        // Just set it to the default
+        language = "ada";
+    }
+
+    document.getElementsByClassName("languages")[0].value = language.toLowerCase()
+
+    new HLJSManager(language).configureHighlight(language);
 });
