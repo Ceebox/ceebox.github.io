@@ -1,9 +1,10 @@
-// @ts-ignore
+// @ts-nocheck
 
 class HLJSManager {
 
     constructor(language) {
         this.language = language;
+        this.addedScripts = [];
         this.setUpPage();
     }
 
@@ -13,18 +14,25 @@ class HLJSManager {
         hljs.languages = this.language;
         hljs.configure({ languages: [this.language] });
 
-        const script = document.createElement("script");
-        script.src = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/" + languageName + ".min.js"
+        // Push the new language to the search bar URL
+        let url = new URL(window.location.href);
+        url.searchParams.set("language", this.language);
 
-        let self = this;
-        script.addEventListener("onload", function () {
-            self.highlight();
-        });
+        history.pushState({}, '', url.href);
 
-        document.head.appendChild(script);
+        if (!this.addedScripts.includes(this.language)) {
+            this.addedScripts.push(this.language);
+            const script = document.createElement("script");
 
-        // @ts-ignore
-        hljs.configure(this.highlightOptions)
+            script.src = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/" + this.language + ".min.js"
+
+            let self = this;
+            script.addEventListener("onload", function () {
+                self.highlight();
+            });
+
+            document.head.appendChild(script);
+        }
     }
 
     setUpPage() {
@@ -73,11 +81,9 @@ class HLJSManager {
             output.textContent = this.createText();
 
             // Process
-            // @ts-ignore
             hljs.highlightElement(output, { language: this.language });
 
-            // Post-process
-            // @ts-ignore
+            // Post-process and remove hljs- class names
             output.innerHTML = output.innerHTML.replaceAll("hljs-", "");
         } catch (error) {
             // HighlightJS is very error happy ¯\_(ツ)_/¯

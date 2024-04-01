@@ -2,7 +2,7 @@ pre code {
     min-width: 100%;
     display: inline-block;
     overflow-x: auto;
-    border-radius: 15px;
+    border-radius: 0.65rem;
     padding: 3px 5px;
     background: #232323;
     color: #fafafa;
@@ -12,9 +12,17 @@ pre code {
     white-space: pre-wrap;
 }
 
+/* Fix code size on small displays */
+@media not screen and (min-width: 1200px) {
+    pre code {
+        font-size: calc(1vw * 1.4);
+    }
+}
+
 code .keyword,
 code .literal,
 code .operator,
+code .selector-tag,
 code .symbol {
     color: #ff5976;
 }
@@ -48,7 +56,13 @@ code .variable {
     color: #4ee2fc;
 }
 
-code .title.function_ {
+code .property {
+    color: #8bb4f7;
+}
+
+code .title.function_,
+code .function,
+code .selector-class {
     color: #8cf06b;
 }
 

@@ -16,7 +16,15 @@ function totalWords(elements) {
     return total;
 }
 
+function trySetTextContent(selector, text) {
+    const element = document.querySelector(selector);
+    if (element !== null) {
+        element.textContent = text;
+    }
+}
+
 window.addEventListener("load", function () {
-    document.querySelector('.wordCount').textContent = "Article Word Count (Excluding Headings & Code): " + totalWords(document.querySelectorAll('p'));
-    document.querySelector('.readTime').textContent = "Reading Time: ~" + Math.floor(totalWords(document.querySelectorAll('div')) / (300 / 60) / 60) + " minutes";
+    trySetTextContent(".wordCount", "Article Word Count: " + totalWords(document.querySelectorAll('p')));
+    trySetTextContent(".wordCountExcluding", "Article Word Count: " + totalWords(document.querySelectorAll('p')));
+    trySetTextContent(".readTime", "Reading Time: ~" + Math.round(totalWords(document.querySelectorAll('div')) / (250 / 60) / 60) + " minutes");
 });

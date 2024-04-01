@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Helping Myself With HighlightJS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Codystar&family=Outfit:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Urbanist:wght@100;300;400;500;800;900&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Codystar&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/code.css">
+
+    <script src="/js/navigation.js"></script>
+    <script src="/js/wordCount.js"></script>
+
+</head>
+
+<body>
+    <div class="content">
+        <h1>Helping Myself With HLJS</h1>
+        <span class="wordCount"></span>
+        <br>
+        <span class="readTime"></span>
+        <br>
+        <h2>The Problem</h2>
+        <p>
+            As a programmer, writing a blog that will probably be a lot about programming, it helps to be able to show
+            code in my blog. I want to show my code nicely though, I don't want to have to copy and paste images onto
+            the site, because that wouldn't look good.
+            <br>
+            <br>
+            Thankfully, I don't have to, because I can <span class="rainbow">colour </span> my text in all sorts of
+            lovely manners, thanks to the magic of the web (or CSS).
+            <br>
+            I can even add all sorts of conditional highlighting and <b>formatting</b> around my page.
+            This means that I can acheive pretty nice looking syntax highlighting on my page using CSS, instead of
+            having to take images of my code and upload them to the website.
+            <br>
+            <br>
+            The thing is, it is going to be awfully time consuming to manually colour and assign properties to all of
+            the code that I upload to this site. This means that I need a way to generate it automatically. There are
+            probably sites or programs that already do this for me, but that is no fun - I want to do it myself.
+            Visual Studio Code actually does generate HTML formatted code when you copy and paste code from inside of
+            it, but it is just a load of coloured <code>&lt;span></code> properties, which I don't really want as it
+            makes my site quite unmaintainble in case I want to give it a fresh new look. The solution to this is using
+            CSS classes in order to properly assign the correct highlighting to certain parts of the text.
+            <br>
+            <br>
+            If I'm doing
+            that, I might as well also make the tool web-based, and host it on this site.
+        </p>
+        <h2>The Solution</h2>
+        <p>
+            Thankfully, there is a solution. <a href="https://highlightjs.org/" class="rainbow">HighlightJS</a> is a
+            JavaScript library that easilly highlights code in a variety of different languages, outputting it in nice
+            HTML using CSS classes, meaning you can add custom theming with ease.
+            <br>
+            <br>
+            After a little bit of testing, I was happy with the results of the library. It isn't perfect, but it is
+            certainly better than highlighting all of the code myself.
+        </p>
+        <pre><code><span class="comment">/* Here is an example, and also some code I use: */</span>
+<span class="selector-tag">code</span> <span class="selector-class">.symbol</span><span class="selector-pseudo">::selection</span> {
+    <span class="attribute">background-color</span>: <span class="number">#4ee2fc</span>;
+}</code></pre>
+        <h2>Implementation</h2>
+        <p>
+            Now I had determined that <a href="https://highlightjs.org/" class="rainbow">HighlightJS</a> would be good
+            enough for my needs (much to my relief, as I didn't want to write my own version), I needed to implement it
+            on my website. Before I did that, I needed to create a basic template, so I created a document with a
+            specially formatted text box. It was here that I discovered the magic of <code>contenteditable</code>, which
+            is a HTML attribute that allows the user to edit the text contents of a <code>&lt;div></code> tag. This was
+            very helpful for me, as I did not want to use a <code>&lt;textbox></code>.
+            <br>
+            <br>
+            I initially tried to highlight the code inside of the <code>&lt;div></code> as the user typed, but that did
+            not work very well as it kept resetting the user's cursor position, and moving the cursor back to where it
+            was is slightly more complicated than it initially seems. Instead of coming up to a solution with that
+            issue, I decided to move on and instead just add another <code>&lt;div></code> to display the output.
+            <br>
+            <br>
+            In order format the code, I had to perform a small bit of processing on it, first off setting the
+            <code>code-output language-</code> class to be the language that the user had configured, then removing the
+            <code>data-highlighted</code> attribute in order to force HighlightJS to re-highlight the code. I then ran
+            this every time the the code input box's text changed.
+        </p>
+        <pre><code><span class="keyword">const</span> output = <span class="variable language_">document</span>.<span
+    class="title function_">getElementsByClassName</span>(<span class="string">"code-output"</span>)[<span
+    class="number">0</span>];
+output.<span class="property">className</span> = <span class="string">"code-output language-"</span> + <span
+    class="variable language_">this</span>.<span class="property">language</span>;
+
+output.<span class="title function_">removeAttribute</span>(<span class="string">"data-highlighted"</span>);
+output.<span class="property">textContent</span> = <span class="variable language_">this</span>.<span
+    class="title function_">createText</span>();
+
+hljs.<span class="title function_">highlightElement</span>(output, { <span class="attr">language</span>: <span
+    class="variable language_">this</span>.<span class="property">language</span> });
+
+<span class="comment">// Remove hljs- class (unlucky if you have hljs- in your stuff)</span>
+output.<span class="property">innerHTML</span> = output.<span class="property">innerHTML</span>.<span
+    class="title function_">replaceAll</span>(<span class="string">"hljs-"</span>, <span class="string">""</span>);</code></pre>
+        <p>
+            At this point, I ran into a problem - my whitespace was not being preserved in the output of my code, which
+            was
+            almost as inconvenient as having to manually colour my code. This actually turned out to be quite a hard
+            issue to fix, which is why I didn't. I found a very convenient <a
+                href="https://medium.com/@albertogasparin/getting-plain-text-from-user-input-on-a-contenteditable-element-b711aba2cb36">article</a>
+            by <a href="https://medium.com/@albertogasparin">Alberto Gasparin</a> on how to get the plain text from a
+            <code>contenteditable</code> element, which might have been a bit of a cheap way out, but it did save me a
+            lot of time.
+            <br>
+            <br>
+            This was great, and it produced highlighted code, but the issue was that it only worked on one programming
+            language at that point in time, being Ada, the first programming language in my alphabetically ordered
+            select box.
+            <br>
+            <br>
+            So, I created a function that triggered whenever the dropdown box changed, passing in the name of the
+            language selected inside of the dropdown box.
+        </p>
+        <pre><code><span class="keyword">if</span> (!<span class="variable language_">this</span>.<span class="property">addedScripts</span>.<span class="title function_">includes</span>(<span class="variable language_">this</span>.<span class="property">language</span>)) {
+    <span class="variable language_">this</span>.<span class="property">addedScripts</span>.<span class="title function_">push</span>(<span class="variable language_">this</span>.<span class="property">language</span>);
+    <span class="keyword">const</span> script = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">"script"</span>);
+
+    script.<span class="property">src</span> = <span class="property">HLJS_LINK</span> + <span class="variable language_">this</span>.<span class="property">language</span> + <span class="string">".min.js"</span>
+
+    <span class="keyword">let</span> self = <span class="variable language_">this</span>;
+    script.<span class="title function_">addEventListener</span>(<span class="string">"onload"</span>, <span class="keyword">function</span> (<span class="params"></span>) {
+        self.<span class="title function_">highlight</span>();
+    });
+
+    <span class="variable language_">document</span>.<span class="property">head</span>.<span class="title function_">appendChild</span>(script);
+}</code></pre>
+        <p>
+            When importing the core of HighlightJS, it does not import the all of language packs required, so I need to
+            import
+            them, but instead of importing them when I first load the website, which would slow loading down, I import
+            them afterwards dynamically, whenever the user needs them by adding the script tag to the page, then
+            re-highlighting the page once it has loaded.
+            <br>
+            <br>
+            When developing this blog, I use a Visual Studio Code extension called <a
+                href="https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer">Live Server</a>, which
+            refreshes my page as I develop it and add new code. This is very handy, but it was quite annoying to have my
+            dropdown box reset as I was making changes, I wanted it to save between reloads. To solve that, I added some
+            code to read the current language from the search parameters using the <code>URLSearchParams</code> class.
+        </p>
+        <pre><code><span class="keyword">let</span> language = <span class="keyword">new</span> <span class="title class_">URLSearchParams</span>(<span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">search</span>).<span class="title function_">get</span>(<span class="string">"language"</span>) ?? <span class="string">"ada"</span>;
+
+<span class="keyword">let</span> valid = <span class="literal">false</span>;
+<span class="keyword">let</span> dropdown = <span class="variable language_">document</span>.<span class="title function_">getElementsByClassName</span>(<span class="string">"languages"</span>)[<span class="number">0</span>];
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; dropdown.<span class="property">length</span>; ++i) {
+    <span class="keyword">if</span> (dropdown.<span class="property">options</span>[i].<span class="property">value</span>.<span class="title function_">toLowerCase</span>() == language.<span class="title function_">toLowerCase</span>()){
+        valid = <span class="literal">true</span>;
+        <span class="keyword">break</span>;
+    }
+}
+
+<span class="keyword">if</span> (valid === <span class="literal">false</span>) {
+    <span class="comment">// Just set it to the default</span>
+    language = <span class="string">"ada"</span>;
+}
+
+dropdown.<span class="property">value</span> = language.<span class="title function_">toLowerCase</span>()</code></pre>
+        <p>
+            This code checks the <code>URLSearchParams</code> to see if they contain a <i>language</i> parameter. It
+            then checks if that language exists inside the dropdown box's options, before setting the dropdown value
+            (and triggering the language loading
+            code that gets activated by that event).
+            <br>
+            <br>
+            I also wanted to write this language parameter to the search bar, so I didn't have to manually input it and
+            could just use the dropdown. This was very easy, using the same <code>URLSearchParams</code> class.
+        </p>
+        <pre><code><span class="keyword">let</span> url = <span class="keyword">new</span> <span class="title function_">URL</span>(<span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">href</span>);
+url.<span class="property">searchParams</span>.<span class="title function_">set</span>(<span class="string">"language"</span>, <span class="variable language_">this</span>.<span class="property">language</span>);        
+history.<span class="title function_">pushState</span>({}, <span class="string">''</span>, url.<span class="property">href</span>);</code></pre>
+        <p>
+            After this, I wanted the user to be able to copy the output HTML to their clipboard, instead of having to
+            open the developer tools to copy it. To do that, I created a button and created a function using
+            <code>ClipboardItem</code> to copy the HTML to their clipboard.
+            <br>
+            <br>
+            I've been using the tool I made to do this to create this whole article, and it has made the experience much
+            better.
+            <br>
+            <br>
+            You can find it <a href="/tools/hljs-generator.html" class="rainbow">here</a>.
+        </p>
+    </div>
+</body>
+
+</html>
