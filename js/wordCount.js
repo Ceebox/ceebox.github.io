@@ -25,6 +25,6 @@ function trySetTextContent(selector, text) {
 
 window.addEventListener("load", function () {
     trySetTextContent(".wordCount", "Article Word Count: " + totalWords(document.querySelectorAll('p')));
-    trySetTextContent(".wordCountExcluding", "Article Word Count: " + totalWords(document.querySelectorAll('p')));
+    trySetTextContent(".wordCountExcluding", "Article Word Count (Excluding Code & Headings): " + totalWords(document.querySelectorAll('p')));
     trySetTextContent(".readTime", "Reading Time: ~" + Math.round(totalWords(document.querySelectorAll('div')) / (250 / 60) / 60) + " minutes");
 });
