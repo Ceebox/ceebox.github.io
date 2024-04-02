@@ -10,6 +10,7 @@ pre code {
     font-size: 20px;
     scrollbar-width: none;
     white-space: pre-wrap;
+    box-shadow: 0.2rem 0.1rem 0.1rem #1a1a1a;
 }
 
 /* Fix code size on small displays */
