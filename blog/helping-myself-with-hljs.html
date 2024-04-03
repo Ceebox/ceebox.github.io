@@ -40,17 +40,17 @@
             lovely manners, thanks to the magic of the web (or CSS).
             <br>
             I can even add all sorts of conditional highlighting and <b>formatting</b> around my page.
-            This means that I can achieve pretty nice looking syntax highlighting on my page using CSS, instead of
+            This means that I can achieve pretty nice-looking syntax highlighting on my page using CSS, instead of
             having to take images of my code and upload them to the website.
             <br>
             <br>
-            The thing is, it is going to be awfully time consuming to manually colour and assign properties to all of
+            The thing is, it is going to be time-consuming to manually colour and assign properties to all of
             the code that I upload to this site. This means that I need a way to generate it automatically. There are
             probably sites or programs that already do this for me, but that is no fun - I want to do it myself.
-            Visual Studio Code actually does generate HTML formatted code when you copy and paste code from inside of
-            it, but it is just a load of coloured <code>&lt;span></code> properties, which I don't really want as it
-            makes my site quite unmaintainble in case I want to give it a fresh new look. The solution to this is using
-            CSS classes in order to properly assign the correct highlighting to certain parts of the text.
+            Visual Studio Code does generate HTML formatted code when you copy and paste code from inside of
+            it, but it is just a load of coloured <code>&lt;span></code> properties, which I don't want as it
+            makes my site quite unmaintainable in case I want to give it a fresh new look. The solution to this is using
+            CSS classes to properly assign the correct highlighting to certain parts of the text.
             <br>
             <br>
             If I'm doing
@@ -59,7 +59,7 @@
         <h2>The Solution</h2>
         <p>
             Thankfully, there is a solution. <a href="https://highlightjs.org/" class="rainbow">HighlightJS</a> is a
-            JavaScript library that easilly highlights code in a variety of different languages, outputting it in nice
+            JavaScript library that easily highlights code in a variety of different languages, outputting it in nice
             HTML using CSS classes, meaning you can add custom theming with ease.
             <br>
             <br>
@@ -76,20 +76,20 @@
             enough for my needs (much to my relief, as I didn't want to write my own version), I needed to implement it
             on my website. Before I did that, I needed to create a basic template, so I created a document with a
             specially formatted text box. It was here that I discovered the magic of <code>contenteditable</code>, which
-            is a HTML attribute that allows the user to edit the text contents of a <code>&lt;div></code> tag. This was
+            is an HTML attribute that allows the user to edit the text contents of a <code>&lt;div></code> tag. This was
             very helpful for me, as I did not want to use a <code>&lt;textbox></code>.
             <br>
             <br>
             I initially tried to highlight the code inside of the <code>&lt;div></code> as the user typed, but that did
             not work very well as it kept resetting the user's cursor position, and moving the cursor back to where it
-            was is slightly more complicated than it initially seems. Instead of coming up to a solution with that
+            was is slightly more complicated than it initially seems. Instead of coming with to a solution to that
             issue, I decided to move on and instead just add another <code>&lt;div></code> to display the output.
             <br>
             <br>
-            In order format the code, I had to perform a small bit of processing on it, first off setting the
+            To format the code, I had to perform a small bit of processing on it, starting with setting the
             <code>code-output language-</code> class to be the language that the user had configured, then removing the
-            <code>data-highlighted</code> attribute in order to force HighlightJS to re-highlight the code. I then ran
-            this every time the the code input box's text changed.
+            <code>data-highlighted</code> attribute to force HighlightJS to re-highlight the code. I then ran
+            this every time the code input box's text changed.
         </p>
         <pre><code><span class="keyword">const</span> output = <span class="variable language_">document</span>.<span
     class="title function_">getElementsByClassName</span>(<span class="string">"code-output"</span>)[<span
@@ -110,7 +110,7 @@ output.<span class="property">innerHTML</span> = output.<span class="property">i
         <p>
             At this point, I ran into a problem - my whitespace was not being preserved in the output of my code, which
             was
-            almost as inconvenient as having to manually colour my code. This actually turned out to be quite a hard
+            almost as inconvenient as having to manually colour my code. This turned out to be quite a hard
             issue to fix, which is why I didn't. I found a very convenient <a
                 href="https://medium.com/@albertogasparin/getting-plain-text-from-user-input-on-a-contenteditable-element-b711aba2cb36">article</a>
             by <a href="https://medium.com/@albertogasparin">Alberto Gasparin</a> on how to get the plain text from a
@@ -119,7 +119,7 @@ output.<span class="property">innerHTML</span> = output.<span class="property">i
             <br>
             <br>
             This was great, and it produced highlighted code, but the issue was that it only worked on one programming
-            language at that point in time, being Ada, the first programming language in my alphabetically ordered
+            language at that point in time, Ada, the first programming language in my alphabetically ordered
             select box.
             <br>
             <br>
