@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Making A Calculator - The Harder Way</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Codystar&family=Outfit:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Urbanist:wght@100;300;400;500;800;900&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Codystar&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/code.css">
+
+    <script src="/js/navigation.js"></script>
+    <script src="/js/wordCount.js"></script>
+</head>
+
+<body>
+    <div class="content">
+        <div id="title">
+            <h1>Making A Calculator... The Harder Way.</h1>
+            <span class="wordCountExcluding"></span>
+            <br>
+            <span class="readTime"></span>
+            <br>
+            <span>Complexity: Intermediate</span>
+        </div>
+        <div id="main">
+            <h2 id="premise">Premise</h2>
+            <p>
+                I am working on creating a game to help people learn coding and problem-solving.
+                For this, I need a simple scripting language that can interface with my game.
+                Unfortunately, none of the programming languages I can use for this fit my requirements, which means I
+                need to make my own.
+                However, that is a bit complex for <b>Introduction To Programming</b> (and I intend on performing
+                some
+                <a href="https://www.youtube.com/watch?v=lIFE7h3m40U">bodges</a>
+                that I don't want people to judge), so I will do something similar, but less complicated and with
+                real-world usability.
+                <br>
+                <br>
+                The assignment brief gave an example of creating a scientific calculator, I have determined
+                that creating a stack-based calculator is very similar to a
+                simple stack-based programming language, and also less complicated, making it much more
+                appropriate for this unit, so I will make that to learn the basic principles.
+                <br>
+                <br>
+                It is important to note that some code in this article will be simplified to <i>hopefully</i> make it
+                easier to understand.
+            </p>
+            <h2 id="basics">The Basics</h2>
+            <p>
+                Before getting started on anything, I set out code style guidelines for the project, giving me
+                rules to work on when laying out and writing code. This is helpful since I am mainly a C# developer and
+                I find that rules reduce confusion.
+                <br>
+                <br>
+                I also set up a <b>git</b> repository on GitHub to allow me to back up my code and work on it on
+                different
+                machines.
+                <br>
+                <br>
+                After that, I created a basic wrapper around input and output, simplifying the process of reading user
+                input (especially numbers) and allowing me to write coloured text to the console, for instance.
+            </p>
+            <pre><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="title class_">void</span> <span class="title function_">example</span>(<span class="params"></span>)
+{
+    <span class="comment">// Display a message and then read console input</span>
+    <span class="title class_">String</span> name = <span class="title class_">Input</span>.<span class="title function_">readLine</span>(<span class="string">"What is your name? "</span>);
+
+    <span class="title class_">Output</span>.<span class="title function_">setConsoleColour</span>(<span class="title class_">ConsoleColour</span>.<span class="property">Blue</span>);
+
+    <span class="comment">// Output blue text to the console</span>
+    <span class="title class_">Output</span>.<span class="title function_">print</span>(<span class="string">"Hello, "</span> + name + <span class="string">"!"</span>);
+}</code></pre>
+            <p>
+                Using this, I created a simple text-based menu system using inheritance that allows the user to choose
+                from a few options to interact with the calculator.
+            </p>
+            <pre><code><span class="class">@InteractiveMenu</span>(<span class="string">"Display all available operators"</span>)
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MenuDisplayOperators</span> <span class="keyword">extends</span> <span class="title class_">Menu</span>
+{
+    <span class="comment">// Handles display and user interaction</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">()</span>
+    {
+        <span class="title class_">Output</span>.<span class="title function_">printSuccess</span>(<span class="string">"This is an example page!"</span>);
+    }
+}</code></pre>
+            <h2 id="postfix">Postfix Notation</h2>
+            <p>
+                Also known as "Reverse Polish Notation", postfix notation is a format for representing expressions where
+                an operator (the instruction) is written after its operands (the data)
+                <a class="reference"
+                    href="https://web.stonehill.edu/compsci/CS104/Stuff/Infix%20and%20%20postfix%20expressions.pdf"><sup>[1]</sup></a>.
+            </p>
+            <pre><code><span class="number">7 2</span> <span class="keyword">add</span>   <span class="comment">// (7 + 2)</span></code></pre>
+            <p>
+                This is useful as it is very easy to parse using a <i>stack</i> (a data structure where the last item
+                input is the first item output), as the
+                operands can be loaded onto the stack, and then popped off and executed when an instruction is reached.
+                <br>
+                This approach is especially useful as it does not need brackets to establish the order of
+                operations due to the way items are allocated onto the stack.
+            </p>
+            <pre><code><span class="number">6 8 1</span> <span class="keyword">subtract multiply</span>   <span class="comment">// 6 * (8 - 1)</span></code></pre>
+            <h2>Calculating...</h2>
+            <p>
+                Using postfix notation, it is quite easy to create a simple calculator
+                <a class="reference"
+                    href="https://www-stone.ch.cam.ac.uk/documentation/rrf/rpn.html"><sup>[2]</sup></a>.
+            </p>
+            <pre><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">Double</span> <span class="title function_">evaluate</span><span class="params">(<span class="type">String</span>[] input)</span>
+{
+    <span class="keyword">var</span> stack <span class="operator">=</span> <span
+        class="keyword">new</span> <span class="title class_">Stack</span>&lt;<span class="type">Double</span>&gt;();
+    <span class="keyword">for</span> (<span class="keyword">var</span> token : input)
+    {
+        <span class="keyword">var</span> num <span class="operator">=</span> <span class="title function_">tryConvertStringToDouble</span>(token);
+        <span class="keyword">if</span> (num <span class="keyword">!=</span> <span class="literal">null</span>)
+        {
+            <span class="comment">// Token is a Double</span>
+            stack.<span class="title function_">push</span>(num);
+        }
+        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="title function_">isFunction</span>(token))
+        {
+            <span class="comment">// Token is a function</span>
+            <span class="keyword">var </span>parameter <span class="operator">=</span> stack.<span class="title function_">pop</span>();
+            <span class="title function_">runFunction</span>(token, parameter);
+        }
+        <span class="keyword">else</span>
+        {
+            <span class="comment">// Token should be an operator</span>
+            <span class="keyword">var</span> rightValue <span class="operator">=</span> stack.<span class="title function_">pop</span>();
+            <span class="keyword">var</span> leftValue <span class="operator">=</span> stack.<span class="title function_">pop</span>();
+            <span class="title function_">runOperator</span>(token, leftValue, rightValue);
+        }
+    }
+
+    <span class="keyword">return</span> stack.<span class="title function_">pop</span>();
+}</code></pre>
+            <p>
+                By iterating through the <i>input</i> expression, we can perform actions based on the type of a
+                given element in the <i>input</i>. A stack-based calculator is relatively simple, only requiring actions
+                relating to numbers (values), operators, and functions.
+                <br>
+                <br>
+                Numbers are consumed by functions and operators, so they are added to the stack to be popped off as
+                needed.
+                <br>
+                The majority of non-complex functions used by calculators only take one parameter, so that is how I have
+                designed the architecture for my functions,
+                although it would theoretically not be much harder to have multiple parameters.
+                <br>
+                <br>
+                To run a function, I first retrieve the parameter from the stack,
+                then I pass it into a method called <code><span class="title function_">runFunction</span></code> along
+                with the identifier, where the identifier is matched
+                up with a method and executed, with the output being pushed onto the stack.
+                <br>
+                <br>
+                Operators work very similarly to functions, except that they need two parameters, one for either side
+                of the operator. The result of that operation is also placed back onto the stack.
+            </p>
+            <h2 id="shunting">Parsing</h2>
+            <p>
+                Requiring the user to enter their expressions in postfix notation is not very user-friendly; we want the
+                user to use this calculator exactly like any other normal calculator, entering their
+                expressions in a normal manner.
+                <br>
+                <br>
+                To allow this, we need to parse the data, turning our input into a structured format that our calculator
+                can understand.
+            </p>
+            <h3 id="preprocessing">Preprocessing</h3>
+            <p>
+                Unfortunately, users don't like putting data into programs the way that programmers often intend them
+                to. To
+                combat this, it is common to <i>preprocess</i> the user's input to try and remove or adjust for anything
+                weird that
+                the user might have done (within reason).
+                <br>
+                In my program, I use whitespace as a separator for instructions, therefore it is important that
+                instructions do not accidentally get combined when whitespace is missing. To fix this, I wrote
+                a small function that intelligently adds a space if two tokens need splitting. After that, I trim any
+                extraneous whitespace and convert the input string to lowercase so it is easier to work with.
+            </p>
+            <h3 id="tokens">Tokens</h3>
+            <p>
+                To have more structured data, I created a custom "Token" data type.
+            </p>
+            <pre><code><span class="keyword">public</span> <span class="keyword">record</span> <span class="title class_">Token</span><span
+                class="params">(<span class="type">TokenType</span> type, <span class="type">V</span> value)</span> { }</code></pre>
+            <p>
+                This is a simple immutable piece of data that contains basic information about an instruction, such as
+                the type
+                (either a literal, an operator, or a function) and the value. In the program (for now), the value can be
+                a
+                <code><span class="type">Double</span></code> (a number) or
+                a <code><span class="type">String</span></code> (a function or operator), so it was important to be able
+                to use one type that was able to
+                represent
+                both
+                of these. I did that by using a <i>generic</i>, which is a flexible type that can work over a variety of
+                data types.
+            </p>
+            <h3 id="shunting-yard">The Shunting Yard Algorithm</h3>
+            <p>
+                At the moment, we still have an infix notation expression that our calculator is not able to understand.
+                We need to
+                convert
+                it into a series of tokens in postfix notation so it can be correctly executed.
+                <br>
+                <br>
+                To parse the input string, there are multiple popular algorithms, each with advantages and
+                disadvantages.
+                However,
+                if you research these for too long, you end up knowing far too much about programming languages from the
+                1960s
+                <a class="reference" href="https://www.cs.utexas.edu/~EWD/MCReps/MR35.PDF"><sup>[3]</sup></a>.
+                <br>
+                <br>
+                From this, I determined that the two most popular ways to parse an expression are with <i>recursive
+                    descent
+                    parsing</i>
+                <a class="reference" href="https://www.engr.mun.ca/~theo/Misc/exp_parsing.htm"><sup>[4]</sup></a>
+                or the <i>Shunting Yard</i> algorithm
+                <a class="reference" href="https://www.chris-j.co.uk/parsing.php"><sup>[5]</sup></a>.
+                <br>
+                <br>
+                The main advantages to recursive descent parsing are that it is much more flexible and you can
+                create
+                more complex logic as a result.
+                However, the Shunting Yard algorithm is considered to have better performance, and it is often described
+                as being
+                less
+                complex to implement. Since this is only a simple calculator, I determined that the Shunting Yard
+                algorithm
+                would be more appropriate to use.
+                <br>
+                <br>
+                The Shunting Yard algorithm is based on two main data structures, one of which is the token queue,
+                which
+                is used to
+                construct the final postfix output of the algorithm - any numbers go straight onto it. The other is the
+                operator stack, which keeps track of functions and operators in reverse order so they can be put onto
+                the
+                queue later in a valid order.
+                <br>
+                <br>
+                With this knowledge, here is a slightly simplified version of my implementation:
+            </p>
+            <pre><code><span class="hljs-keyword"></span><span class="keyword">private</span> <span class="keyword">static</span> <span class="title class_">ArrayList</span>&lt;<span class="title class_">Token</span>&lt;?&gt;&gt; tokens = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();
+<span class="keyword">private</span> <span class="keyword">static</span> <span class="title class_">Stack</span>&lt;<span class="title class_">String</span>&gt; operators = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();
+
+<span class="keyword">public</span> <span class="keyword">static</span> <span class="title class_">ArrayList</span>&lt;<span class="title class_">Token</span>&lt;?&gt;&gt; <span class="title function_">tokenizeExpression</span>(<span class="params"><span class="built_in">String</span>[] input</span>)
+{
+    <span class="keyword">for</span> (<span class="keyword">var</span> value : input)
+    {
+        <span class="comment">// We don't want to add empty values</span>
+        <span class="keyword">if</span> (value.<span class="title function_">isEmpty</span>())
+            <span class="keyword">continue</span>;
+
+        <span class="comment">// If the value is a number, add it to the token queue</span>
+        <span class="keyword">var</span> parsedDouble = <span class="title function_">tryParseDouble</span>(value);
+        <span class="keyword">if</span> (parsedDouble <span class="keyword">!=</span> <span class="literal">null</span>)
+            tokens.<span class="title function_">add</span>(<span class="keyword">new</span> <span class="title class_">Token</span>&lt;&gt;(<span class="title class_">TokenType</span>.<span class="property">Literal</span>, parsedDouble));
+
+        <span class="comment">// If it is a opening bracket, add it to the operator stack</span>
+        <span class="keyword">else</span> <span class="keyword">if</span> (value.<span class="title function_">equals</span>(<span class="string">"("</span>))
+            operators.<span class="title function_">push</span>(value);
+
+        <span class="comment">// Go back and add operators inside the brackets ("closing" them)</span>
+        <span class="keyword">else</span> <span class="keyword">if</span> (value.<span class="title function_">equals</span>(<span class="string">")"</span>))
+        {
+            <span class="keyword">while</span> (<span class="keyword">!</span>operators.<span class="title function_">isEmpty</span>())
+            {
+                <span class="keyword">if</span> (operators.<span class="title function_">peek</span>().<span class="title function_">equals</span>(<span class="string">"("</span>))
+                    <span class="keyword">break</span>;
+
+                <span class="title function_">popOperatorToTokenQueue</span>();
+            }
+        }
+
+        <span class="comment">// If it is a function, add it to the operator queue</span>
+        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="title function_">isFunction</span>(value))
+            operators.<span class="title function_">push</span>(value);
+
+        <span class="comment">// Hope that the expression is valid and add it as an operator</span>
+        <span class="keyword">else</span>
+        {
+            <span class="comment">// Add previous operators (inside this scope)</span>
+            <span class="keyword">while</span> (<span class="keyword">!</span>operators.<span class="title function_">empty</span>() <span class="keyword">&amp;&amp;</span> <span class="keyword">!</span>operators.<span class="title function_">peek</span>().<span class="title function_">equals</span>(<span class="string">"("</span>))
+                <span class="title function_">popOperatorToTokenQueue</span>();
+
+            operators.<span class="title function_">push</span>(value);
+        }
+    }
+
+    <span class="comment">// Add the rest of the operators to the queue</span>
+    <span class="keyword">while</span> (<span class="keyword">!</span>operators.<span class="title function_">isEmpty</span>())
+        <span class="title function_">popOperatorToTokenQueue</span>();
+
+    <span class="keyword">return</span> tokens;
+}</code></pre>
+            <p>
+                There are some issues with my implementation, for instance, it does not support functions with multiple
+                parameters and it is relatively hard to extend. However, none of these issues are significant when
+                creating a simple calculator.
+                <br>
+                <br>
+                Now, I can connect the tokenizer with the main calculator execution logic to evaluate expressions.
+            </p>
+            <pre><code>((<span class="number">4.3</span> + <span class="number">5.7</span>) / (<span class="number">9</span> - <span
+                class="number">5</span>)) + <span class="title function_">floor</span>(<span class="number">3.4</span>) <span
+                class="comment">    // 5.5 - It works!</span></code></pre>
+            <h2 id="functions">Running functions</h2>
+            <p>
+                Even though the calculator worked, it was inconvenient to add more functions or operators to it, because
+                that was based on a very large
+                <code><span class="keyword">switch</span> </code> statement that matched the function's name to
+                the
+                actual function in my Java code, which was not ideal.
+                <br>
+                <br>
+                To get around this, I used reflection, which is when a program inspects itself <a class="reference"
+                    href="https://www.oracle.com/technical-resources/articles/java/javareflection.html"><sup>[6]</sup></a>.
+                To do this,
+                I used
+                an <i>annotation</i>, which is like a tag the program can use to identify methods or fields
+                inside itself.
+            </p>
+            <pre><code><span class="title class_">@Retention</span>(<span class="title class_">RetentionPolicy</span>.<span class="property">RUNTIME</span>)
+<span class="title class_">@Target</span>(<span class="title class_">ElementType</span>.<span class="property">METHOD</span>)
+<span class="keyword">public</span> <span class="title class_">@interface</span> <span class="title class_">Function</span>
+{
+    <span class="keyword">public</span> <span class="title class_">String</span> <span class="title function_">value</span>();
+}</code></pre>
+
+            <p>
+                After putting this <i>annotation</i> on the calculator functions, I used reflection to get a
+                list of all of the methods with that tag on.
+            </p>
+
+            <pre><code><span class="keyword">private</span> <span class="keyword">static final</span> <span class="title class_">HashMap</span>&lt;<span class="title class_">String</span>, <span class="title class_">Method</span>&gt; functions = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();
+<span class="keyword">public</span> <span class="keyword">static</span> <span class="title class_">void</span> <span class="title function_">initializeFunctions</span>(<span class="params"></span>)
+{
+    <span class="comment">// Add all valid functions to the map</span>
+    <span class="keyword">for</span> (<span class="title class_">Method</span> method : <span class="title class_">Functions</span>.<span class="keyword">class</span>.<span class="title function_">getDeclaredMethods</span>())
+    {
+        <span class="keyword">if</span> (method.<span class="title function_">isAnnotationPresent</span>(<span class="title class_">Function</span>.<span class="keyword">class</span>))
+        {
+            functions.<span class="title function_">put</span>(
+                method.<span class="title function_">getAnnotation</span>(<span class="title class_">Function</span>.<span class="keyword">class</span>).<span class="title function_">value</span>(), method);
+        }
+    }
+}</code></pre>
+            <p>
+                From there, I could execute a user-requested function by searching through that list
+                for
+                the name of the function and invoking the method. With functions, I allowed the user to call them using
+                the name of
+                the method or a custom name specified in the <i>annotation</i> as I thought it made the calculator more
+                user-friendly.
+            </p>
+            <pre><code><span class="keyword">public</span> <span class="keyword">static void</span> <span class="title function_">evaluateFunction</span>(<span class="title class_">String</span> name) <span class="keyword">throws</span> <span class="title class_">ExecutionException</span>
+{
+    <span class="keyword">for</span> (<span class="title class_">Map</span>.<span class="type">Entry</span>&lt;<span class="title class_">String</span>, <span class="title class_">Method</span>&gt; entry : functions.<span class="title function_">entrySet</span>())
+    {
+        <span class="comment">// Run the function if the user puts in either name</span>
+        <span class="keyword">if</span> (name.<span class="title function_">equals</span>(entry.<span class="title function_">getValue</span>().<span class="title function_">getName</span>()) <span class="keyword">||</span>
+            name.<span class="title function_">equals</span>(entry.<span class="title function_">getKey</span>()))
+        {
+            entry.<span class="title function_">getValue</span>().<span class="title function_">invoke</span>(<span class="literal">null</span>);
+        }
+    }
+}</code></pre>
+            <p>
+                I also repeated this process in a very similar manner with operators, as it made it much easier to
+                work
+                with them.
+            </p>
+            <h2 id="testing">Testing</h2>
+            <p>
+                Aside from manually testing the calculator by evaluating and checking a wide variety of expressions,
+                I
+                also used the JUnit testing framework to design unit tests for the calculator. I ended up creating over
+                50 tests to ensure that my program worked correctly.
+                <br>
+                <br>
+                It was important to test each part of the program separately to ensure I could identify exactly where
+                something could have potentially broken, so I made a wide suite of tests.
+                <br>
+                <br>
+                First, I created tests for the tokenizer, which is the part of my program responsible for
+                parsing the expression input by the user into tokens for the evaluator to use later.
+            </p>
+            <pre><code><span class="type">@Test</span>
+<span class="keyword">public</span> <span class="title class_">void</span> <span class="title function_">tokenizeBasicExpression</span>(<span class="params"></span>)
+{
+    <span class="comment">// (1 + 2)</span>
+    <span class="keyword">var</span> expectedResult = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;<span class="title class_">Token</span>&lt;?&gt;&gt;();
+    expectedResult.<span class="title function_">add</span>(<span class="keyword">new</span> <span class="title class_">Token</span>&lt;&gt;(<span class="title class_">TokenType</span>.<span class="property">Literal</span>, <span class="number">1.0</span>));
+    expectedResult.<span class="title function_">add</span>(<span class="keyword">new</span> <span class="title class_">Token</span>&lt;&gt;(<span class="title class_">TokenType</span>.<span class="property">Literal</span>, <span class="number">2.0</span>));
+    expectedResult.<span class="title function_">add</span>(<span class="keyword">new</span> <span class="title class_">Token</span>&lt;&gt;(<span class="title class_">TokenType</span>.<span class="property">Operator</span>, <span class="string">"+"</span>));
+
+    <span class="keyword">var</span> result = <span class="title class_">Tokenizer</span>.<span class="title function_">tokenizeExpression</span>(<span class="string">"(1 + 2)"</span>);
+
+    <span class="keyword">assert</span> expectedResult.<span class="title function_">equals</span>(result);
+}</code></pre>
+            <p>
+                From there, I created some tests for the evaluator, which is responsible for executing the tokenized
+                list of instructions.
+            </p>
+            <pre><code><span class="type">@Test</span>
+<span class="keyword">public</span> <span class="title class_">void</span> <span class="title function_">evaluateBasic</span>() <span class="keyword">throws</span> <span class="title class_">TokenException</span>, <span class="title class_">ExecutionException</span>
+{
+    <span class="comment">// (1 + 2)</span>
+    <span class="keyword">var</span> expectedResult = <span class="number">1.0</span> + <span class="number">2.0</span>;
+
+    <span class="keyword">var</span> input = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;<span class="title class_">Token</span>&lt;?&gt;&gt;();
+    input.<span class="title function_">add</span>(<span class="keyword">new</span> <span class="title class_">Token</span>&lt;&gt;(<span class="title class_">TokenType</span>.<span class="property">Literal</span>, <span class="number">1.0</span>));
+    input.<span class="title function_">add</span>(<span class="keyword">new</span> <span class="title class_">Token</span>&lt;&gt;(<span class="title class_">TokenType</span>.<span class="property">Literal</span>, <span class="number">2.0</span>));
+    input.<span class="title function_">add</span>(<span class="keyword">new</span> <span class="title class_">Token</span>&lt;&gt;(<span class="title class_">TokenType</span>.<span class="property">Operator</span>, <span class="string">"+"</span>));
+
+    <span class="keyword">var</span> result = <span class="title class_">Evaluator</span>.<span class="title function_">evaluate</span>(input);
+
+    <span class="keyword">assert</span> expectedResult <span class="keyword">==</span> result;
+}</code></pre>
+            <p>
+                After that, I added a series of <i>combined</i> tests that ensure both of those work together correctly.
+            </p>
+            <pre><code><span class="type">@Test</span>
+<span class="keyword">public</span> <span class="title class_">void</span> <span class="title function_">calculateExecutionErrorRPN</span>(<span class="params"></span>)
+{
+    <span class="comment">// Check that invalid input throws an error.</span>
+    <span class="keyword">var</span> input = <span class="title class_">Tokenizer</span>.<span class="title function_">tokenizeReversePolishNotation</span>(<span class="string">"Taste The Pain"</span>);
+
+    <span class="keyword">try</span>
+    {
+        <span class="title class_">Evaluator</span>.<span class="title function_">evaluate</span>(input);
+    }
+    <span class="keyword">catch</span> (<span class="title class_">Exception</span> ex)
+    {
+        <span class="keyword">assert</span> ex <span class="keyword">instanceof</span> <span class="title class_">ExecutionException</span>;
+        <span class="keyword">return</span>;
+    }
+
+    <span class="comment">// If we don't get an error, something is VERY wrong.</span>
+    <span class="keyword">assert</span> <span class="literal">false</span>;
+}</code></pre>
+            <h2 id="conclusion">Conclusion</h2>
+            <p>
+                I am happy with this project and have ported this code over to C#, which is much more flexible and
+                better for creating
+                a system like this. I have integrated it with my custom game engine and added support for more data
+                types
+                and variables, and I am implementing
+                user-defined functions.
+            </p>
+        </div>
+        <div id="references">
+            <h2>References</h2>
+            <div>
+                <ol>
+                    <a href="https://web.stonehill.edu/compsci/CS104/Stuff/Infix%20and%20%20postfix%20expressions.pdf">
+                        <li>Infix and postfix expressions</li>
+                    </a>
+                    <a href="https://www-stone.ch.cam.ac.uk/documentation/rrf/rpn.html">
+                        <li>Reverse Polish Notation</li>
+                    </a>
+                    <a href="https://www.cs.utexas.edu/~EWD/MCReps/MR35.PDF">
+                        <li>An ALGOL-60 Translator for the X1</li>
+                    </a>
+                    <a href="https://www.engr.mun.ca/~theo/Misc/exp_parsing.htm">
+                        <li>Parsing Expressions by Recursive Descent</li>
+                    </a>
+                    <a href="https://www.chris-j.co.uk/parsing.php">
+                        <li>Parsing infix notation</li>
+                    </a>
+                    <a href="https://www.oracle.com/technical-resources/articles/java/javareflection.html">
+                        <li>Using Java Reflection</li>
+                    </a>
+                    <a href="https://github.com/highlightjs/highlight.js">
+                        <li>Code block styling (highlightjs)</li>
+                    </a>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
