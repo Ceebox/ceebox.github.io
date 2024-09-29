@@ -145,6 +145,10 @@ code {
     opacity: 0.50;
 }
 
+.navigation a:hover {
+    text-decoration: underline;
+}
+
 .navigation a:link {
     color: inherit;
 }
