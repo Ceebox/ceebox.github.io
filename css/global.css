@@ -130,7 +130,7 @@ code {
     z-index: 10;
     width: 100%;
     overflow: hidden;
-    border-radius: 1em;
+    border-radius: calc(1vw * 1.4);
 }
 
 .navigation a {
