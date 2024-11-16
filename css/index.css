@@ -1,10 +1,12 @@
 .latestVideoEmbed {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
     min-width: 70% !important;
     aspect-ratio: 16 / 9;
+}
+
+.border-outer {
+    margin: auto;
+    display: flex;
+    place-content: center;
 }
 
 @media not screen and (min-width: 1200px) {
@@ -15,7 +17,8 @@
 
 h1 {
     text-align: center;
-    margin: 0.5em 0 0 0;
+    font-size: calc((1vw + 1vh) * 3.5);
+    margin: 0.5em 0 0.5em 0;
 }
 
 h2 {
@@ -27,7 +30,7 @@ h2 {
 h3 {
     text-align: center;
     opacity: 0.9;
-    margin: 0.5em 0 0.65em 0;
+    margin: 0.5em 0 0.5em 0;
 }
 
 @keyframes opacityChange {
