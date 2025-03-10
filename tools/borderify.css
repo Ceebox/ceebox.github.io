@@ -1,0 +1,44 @@
+div {
+    display: flex;
+    height: min-content;
+    align-items: center;
+}
+
+input[type="number"] {
+    height: min-content;
+    width: fit-content;
+    margin: 16px;
+}
+
+input[type="file"] {
+    font-family: "Outfit";
+    color: var(--main-colour);
+}
+
+input::file-selector-button {
+    font-family: "Outfit";
+
+    color: var(--background-colour);
+    background-color: (--main-colour);
+
+    border-radius: 4px;
+    border: none;
+}
+
+input[type="color"] {
+    font-family: "Outfit";
+    color: var(--main-colour);
+    border: none;
+    margin: 16px;
+}
+
+canvas {
+    width: 100%;
+    height: fit-content;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
