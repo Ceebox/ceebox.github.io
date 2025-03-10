@@ -6,8 +6,8 @@
 /* Light mode body colouring */
 @media (prefers-color-scheme: light) {
     html {
-        background-color: #fafafa;
-        color: #1a1a1a;
+        --background-colour: #fafafa;
+        --main-colour: #1a1a1a;
     }
 
     .navigation {
@@ -41,8 +41,8 @@
 /* Dark mode body colouring */
 @media (prefers-color-scheme: dark) {
     html {
-        background-color: #1a1a1a;
-        color: #fafafa;
+        --background-colour: #1a1a1a;
+        --main-colour: #fafafa;
     }
 
     .navigation {
@@ -53,6 +53,11 @@
         border-radius: 2em;
         border: solid #fafafa 1.5vw;
     }
+}
+
+html {
+    background-color: var(--background-colour);
+    color: var(--main-colour);
 }
 
 /* Mobile sizing */
