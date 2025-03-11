@@ -3,11 +3,17 @@
     background: #ff5976;
 }
 
+html {
+    /* Variables */
+    --font-family: "Outfit", sans-serif
+}
+
 /* Light mode body colouring */
 @media (prefers-color-scheme: light) {
     html {
         --background-colour: #fafafa;
         --main-colour: #1a1a1a;
+        --accent-colour: #232323
     }
 
     .navigation {
@@ -43,6 +49,7 @@
     html {
         --background-colour: #1a1a1a;
         --main-colour: #fafafa;
+        --accent-colour: #232323
     }
 
     .navigation {
