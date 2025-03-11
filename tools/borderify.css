@@ -4,32 +4,66 @@ div {
     align-items: center;
 }
 
-input[type="number"] {
+input[type="text"] {
+    cursor: pointer;
+
     height: min-content;
     width: fit-content;
     margin: 16px;
+
+    border: solid 2px;
+    font-size: 24px;
+    text-align: left;
+    padding-left: 10px;
+
+    width: 10rem;
+    min-height: 2rem;
+    border-radius: 0.25em;
+    box-shadow: 0 0 1em 0 #1a1a1a11;
+
+    color: var(--main-colour);
+    background: var(--accent-colour);
+    border-color: var(--main-colour);
+
+    font-family: var(--font-family);
 }
 
 input[type="file"] {
-    font-family: "Outfit";
+    margin-left: 16px;
+
+    border-radius: 0.25em;
     color: var(--main-colour);
+
+    font-size: 24px;
+    font-family: var(--font-family);
 }
 
 input::file-selector-button {
-    font-family: "Outfit";
+    cursor: pointer;
 
-    color: var(--background-colour);
-    background-color: (--main-colour);
+    /* Move the file name text over to the right */
+    margin-right: 16px;
 
-    border-radius: 4px;
-    border: none;
+    color: var(--main-colour);
+    background: var(--accent-colour);
+    border-color: var(--main-colour);
+
+    font-family: var(--font-family);
+    border: solid 2px white;
+
+    border-radius: 0.25em;
 }
 
 input[type="color"] {
-    font-family: "Outfit";
+    cursor: pointer;
+
+    margin-left: 16px;
+
     color: var(--main-colour);
+
+    font-family: var(--font-family);
+
     border: none;
-    margin: 16px;
 }
 
 canvas {
@@ -37,8 +71,39 @@ canvas {
     height: fit-content;
 }
 
+button {
+    border: solid 2px;
+    font-size: 24px;
+    text-align: left;
+    padding: 1rem 4rem 1rem 1rem;
+
+    width: 10rem;
+    min-height: 2rem;
+    border-radius: 0.25em;
+    box-shadow: 0 0 1em 0 #1a1a1a11;
+    cursor: pointer;
+
+    color: var(--main-colour);
+    background: var(--accent-colour);
+    border-color: var(--main-colour);
+
+    font-family: var(--font-family);
+
+    &::-ms-expand {
+        display: none;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
+
 .center {
     display: flex;
     align-items: center;
     align-content: center;
+}
+
+.canvas-populated {
+    margin-bottom: 16px;
 }

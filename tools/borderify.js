@@ -1,33 +1,43 @@
 class Borderify {
 
-    constructor() { }
+    constructor() {
+        this.result = null;
+    }
 
     addFileChangedEventListener() {
-        let fileInput = document.getElementById("file-input");
-        if (fileInput == null) {
+        const fileInput = document.getElementById("file-input");
+        const sizeInput = document.getElementById("size-input");
+        const colourInput = document.getElementById("colour-input");
+        const downloadButton = document.getElementById("download-button");
+        const canvas = document.getElementById('main-canvas');
+
+        if (fileInput == null ||
+            sizeInput == null ||
+            colourInput == null ||
+            downloadButton == null ||
+            canvas == null
+        ) {
             return;
         }
 
         fileInput.onchange = () => {
+
+            // Move the download button down when the canvas has a height
+            canvas.classList.add("canvas-populated");
+
             this.fileChanged()
         }
 
-        let sizeInput = document.getElementById("size-input");
-        if (sizeInput == null) {
-            return;
-        }
-
         sizeInput.onchange = () => {
-            this.fileChanged();
-        }
-
-        let colourInput = document.getElementById("colour-input");
-        if (colourInput == null) {
-            return;
+            this.drawNewImage();
         }
 
         colourInput.onchange = () => {
-            this.fileChanged();
+            this.drawNewImage();
+        }
+
+        downloadButton.onclick = () => {
+            this.downloadImage();
         }
     }
 
@@ -39,24 +49,29 @@ class Borderify {
         reader.readAsDataURL(file);
         reader.onloadend = (e) => {
             if (e.target.readyState == FileReader.DONE) {
-                this.drawNewImage(e.target?.result);
+                this.result = e.target?.result
+                this.drawNewImage();
             }
         }
     }
 
-    drawNewImage(imageData) {
-        let canvas = document.getElementById('main-canvas');
-        if (canvas == null) {
+    drawNewImage() {
+        const canvas = document.getElementById('main-canvas');
+        const sizeInput = document.getElementById("size-input");
+        if (canvas == null || sizeInput == null) {
             return;
+        }
+
+        const thickness = sizeInput.value;
+        if (Math.sign(thickness) == -1) {
+            thickness = 0;
         }
 
         let ctx = canvas.getContext("2d");
         let img = new Image();
 
-        img.src = imageData;
+        img.src = this.result;
         img.onload = () => {
-            let thickness = document.getElementById("size-input").value;
-
             canvas.width = img.naturalWidth + (thickness * 2);
             canvas.height = img.naturalHeight + (thickness * 2);
             canvas.style.width = img.naturalWidth + (thickness * 2);
@@ -70,6 +85,22 @@ class Borderify {
             ctx.globalCompositeOperation = "source-over";
             ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, thickness, thickness, img.naturalWidth, img.naturalHeight);
         }
+    }
+
+    downloadImage() {
+        var canvas = document.getElementById("main-canvas");
+        let fileInput = document.getElementById("file-input");
+
+        if (canvas == null || fileInput == null || fileInput.files[0] == null) {
+            return;
+        }
+
+        var aDownloadLink = document.createElement("a");
+        aDownloadLink.download = "borderify-" + fileInput.files[0].name;
+
+        var image = canvas.toDataURL();
+        aDownloadLink.href = image;
+        aDownloadLink.click();
     }
 }
 

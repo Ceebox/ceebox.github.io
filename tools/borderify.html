@@ -28,12 +28,17 @@
 <body>
     <main class="content">
         <h1>Borderify</h1>
+        <p>A scrappy utility to add a border to images.</p>
         <h2>Image</h2>
-        <input type="file" id="file-input" accept="image/*">
+        <div>
+            <p>File:</p>
+            <input type="file" id="file-input" accept="image/*">
+        </div>
         <h2>Settings</h2>
         <div>
             <p>Border Size:</p>
-            <input id="size-input" type="number" value="1">
+            <!-- Use "text" to hide the scroll arrows without ugly CSS -->
+            <input id="size-input" type="text" inputmode="numeric" pattern="[0-9]*" size="4" value="1">
         </div>
         <div>
             <p>Colour:</p>
@@ -41,8 +46,9 @@
         </div>
         <h2>Output</h2>
         <div class="center">
-            <canvas id="main-canvas"></canvas>
+            <canvas id="main-canvas" height="0"></canvas>
         </div>
+        <button id="download-button">Download</button>
     </main>
 </body>
 
