@@ -98,6 +98,31 @@ button {
     }
 }
 
+select {
+    border: solid 2px;
+    text-align: left;
+
+    font-size: 24px;
+    margin-left: 16px;
+
+    align-self: center;
+    border-radius: 0.25em;
+    box-shadow: 0 0 1em 0 #1a1a1a11;
+    cursor: pointer;
+
+    color: var(--main-colour);
+    background: var(--accent-colour);
+    border-color: var(--main-colour);
+
+    font-family: var(--font-family);
+
+    /* <option> colors */
+    option {
+        color: inherit;
+        background-color: --accent-colour;
+    }
+}
+
 .center {
     display: flex;
     align-items: center;

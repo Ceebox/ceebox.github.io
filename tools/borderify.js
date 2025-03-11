@@ -9,13 +9,15 @@ class Borderify {
         const sizeInput = document.getElementById("size-input");
         const colourInput = document.getElementById("colour-input");
         const downloadButton = document.getElementById("download-button");
+        const modeSelect = document.getElementById("mode-select");
         const canvas = document.getElementById('main-canvas');
 
         if (fileInput == null ||
             sizeInput == null ||
             colourInput == null ||
             downloadButton == null ||
-            canvas == null
+            canvas == null ||
+            modeSelect == null
         ) {
             return;
         }
@@ -33,6 +35,10 @@ class Borderify {
         }
 
         colourInput.onchange = () => {
+            this.drawNewImage();
+        }
+
+        modeSelect.onchange = () => {
             this.drawNewImage();
         }
 
@@ -58,7 +64,8 @@ class Borderify {
     drawNewImage() {
         const canvas = document.getElementById('main-canvas');
         const sizeInput = document.getElementById("size-input");
-        if (canvas == null || sizeInput == null) {
+        const modeSelect = document.getElementById("mode-select");
+        if (canvas == null || sizeInput == null || modeSelect == null) {
             return;
         }
 
@@ -72,10 +79,19 @@ class Borderify {
 
         img.src = this.result;
         img.onload = () => {
-            canvas.width = img.naturalWidth + (thickness * 2);
-            canvas.height = img.naturalHeight + (thickness * 2);
-            canvas.style.width = img.naturalWidth + (thickness * 2);
-            canvas.style.height = img.naturalHeight + (thickness * 2);
+
+            let thicknessX = thickness;
+            let thicknessY = thickness;
+
+            if (modeSelect.value == "%") {
+                thicknessX = img.naturalWidth * (thickness / 100);
+                thicknessY = img.naturalHeight * (thickness / 100);
+            }
+
+            canvas.width = img.naturalWidth + (thicknessX * 2);
+            canvas.height = img.naturalHeight + (thicknessY * 2);
+            canvas.style.width = img.naturalWidth + (thicknessX * 2);
+            canvas.style.height = img.naturalHeight + (thicknessY * 2);
 
             // fill with color
             ctx.fillStyle = document.getElementById("colour-input").value;
@@ -83,7 +99,7 @@ class Borderify {
 
             // draw original image in normal mode
             ctx.globalCompositeOperation = "source-over";
-            ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, thickness, thickness, img.naturalWidth, img.naturalHeight);
+            ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, thicknessX, thicknessY, img.naturalWidth, img.naturalHeight);
         }
     }
 
