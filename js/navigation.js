@@ -1,14 +1,14 @@
 function createNavbar() {
-    const div = document.createElement("div");
-    div.className = "navigation";
+    const nav = document.createElement("nav");
+    nav.className = "navigation";
 
-    div.appendChild(createListElement("Home", "/index.html"));
-    div.appendChild(createListElement("Blog", "/blog.html"));
-    div.appendChild(createListElement("Games", "/games.html"));
-    div.appendChild(createListElement("Web Tools", "/tools.html"));
-    div.appendChild(createListElement("About", "/about.html"));
+    nav.appendChild(createListElement("Home", "/index.html"));
+    nav.appendChild(createListElement("Blog", "/blog.html"));
+    nav.appendChild(createListElement("Games", "/games.html"));
+    nav.appendChild(createListElement("Web Tools", "/tools.html"));
+    nav.appendChild(createListElement("About", "/about.html"));
 
-    document.body.insertAdjacentElement("afterbegin", div);
+    document.body.insertAdjacentElement("afterbegin", nav);
 }
 
 function createListElement(text, filePath) {
