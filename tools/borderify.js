@@ -8,6 +8,7 @@ class Borderify {
         const fileInput = document.getElementById("file-input");
         const sizeInput = document.getElementById("size-input");
         const colourInput = document.getElementById("colour-input");
+        const pickButton = document.getElementById("pick-button");
         const downloadButton = document.getElementById("download-button");
         const modeSelect = document.getElementById("mode-select");
         const canvas = document.getElementById('main-canvas');
@@ -15,6 +16,7 @@ class Borderify {
         if (fileInput == null ||
             sizeInput == null ||
             colourInput == null ||
+            pickButton == null ||
             downloadButton == null ||
             canvas == null ||
             modeSelect == null
@@ -42,8 +44,12 @@ class Borderify {
             this.drawNewImage();
         }
 
-        downloadButton.onclick = () => {
-            this.downloadImage();
+        pickButton.onclick = () => {
+            this.beginColourPick();
+        }
+
+        downloadButton.onclick = async () => {
+            await this.downloadImage();
         }
     }
 
@@ -117,6 +123,17 @@ class Borderify {
         var image = canvas.toDataURL();
         aDownloadLink.href = image;
         aDownloadLink.click();
+    }
+
+    async beginColourPick() {
+        if (!("EyeDropper" in window)) {
+            console.warn("EyeDropper is not supported in your browser!")
+            return;
+        }
+
+        const result = await new EyeDropper().open();
+        document.getElementById("colour-input").value = result.sRGBHex;
+        this.drawNewImage();
     }
 }
 

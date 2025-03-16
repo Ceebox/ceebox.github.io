@@ -58,6 +58,7 @@ input[type="color"] {
     cursor: pointer;
 
     margin-left: 16px;
+    margin-right: 16px;
 
     color: var(--main-colour);
 
@@ -121,6 +122,11 @@ select {
         color: inherit;
         background-color: --accent-colour;
     }
+}
+
+.small {
+    line-height: 0rem;
+    height: 2rem;
 }
 
 .center {
